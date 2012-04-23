@@ -10,7 +10,7 @@
 				<button class="btn btn-info btn-large" value="create" id="create_btn"/>Create</button>
 		    </div>
 		    <div class="span6" id="create_right">
-			    <a href="#share"><button class="btn" id="Tag_Box"/>Code Will Appear Here</button></a>
+			    <button class="btn" id="Tag_Box"/>Code Will Appear Here</button>
 		    </div>
 		</div>
 	    </p>

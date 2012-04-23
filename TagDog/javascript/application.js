@@ -1,3 +1,4 @@
+
 jQuery(document).ready(function(){
 
 
@@ -266,17 +267,39 @@ var keepPopover, delay = function() { keepPopover = setTimeout( function() { $('
 
 
 //create section functions
+function Tag(line1, line2, line3, line4)		//New class labeled Tag that contains each line and URL
+{
+	this.line = new Array();
+	this.line.push(line1);
+	this.line.push(line2);
+	this.line.push(line3);
+	this.line.push(line4);
+	this.URL = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + line1 + line2 + line3 + line4;
+}
+
+function retrieveTagInfo(tag)
+{
+	var string = "";
+	for(var i=0;i<tag.line.length;i++)
+	{
+		string+="<h3>"+tag.line[i]+"</h3>";
+	}
+	return string;
+}
+
 function createTag(){
 		var URL="https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl="
 		var line1=document.getElementById("c_line1").value;
 		var line2=document.getElementById("c_line2").value;
 		var line3=document.getElementById("c_line3").value;
 		var line4=document.getElementById("c_line4").value;
-		//var TAG=document.getElementById("QR_code");
-		var TAG=URL+line1+line2+line3+line4;
-		jQuery("button#Tag_Box").html("</br><a href='#share'><img id='QR_code' src='"+TAG+"'/></a>");
-		jQuery("button#share_button_preview").html("<img src='"+URL+line1+line2+line3+line4+"' />");
+		tag = new Tag(line1, line2, line3, line4);
+		var info = retrieveTagInfo(tag);
+		jQuery("button#Tag_Box").html("</br><a href='#share'><img id='QR_code' src='"+tag.URL+"'/></a>");
+		jQuery("button#share_button_preview").html("<img src='"+tag.URL+"' />");
+		return tag;
 }
+
 
 jQuery("button#create_btn").click(
 		function() {
@@ -284,11 +307,21 @@ jQuery("button#create_btn").click(
 		}
 	);
 
-jQuery("button#Tag_Box").click(
-		function() {
-			//
-		}
-	);
+jQuery("button#Tag_Box").mouseenter(
+	
+	function(){
+		jQuery("button#Tag_Box").tooltip({
+			placement: 'top',
+			trigger: "hover",
+			title: "Click the tag to share!"
+		});
+	});
+$("#QR_code").click(
+	function(){
+		$("#QR_code").modal({
+			
+		})
+	});
 
 });
 
