@@ -269,12 +269,14 @@ var keepPopover, delay = function() { keepPopover = setTimeout( function() { $('
 //create section functions
 function Tag(line1, line2, line3, line4)		//New class labeled Tag that contains each line and URL
 {
+	//<? php $email = $this->session->userdata('email');
+	this.email = "";
 	this.line = new Array();
 	this.line.push(line1);
 	this.line.push(line2);
 	this.line.push(line3);
 	this.line.push(line4);
-	this.URL = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + line1 + line2 + line3 + line4;
+	this.URL = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + escape(line1+"\n"+line2+"\n"+line3+"\n"+line4);
 }
 
 function retrieveTagInfo(tag)
@@ -297,6 +299,7 @@ function createTag(){
 		var info = retrieveTagInfo(tag);
 		jQuery("button#Tag_Box").html("</br><a href='#share'><img id='QR_code' src='"+tag.URL+"'/></a>");
 		jQuery("button#share_button_preview").html("<img src='"+tag.URL+"' />");
+		postStatus("Tag_box", "Success! Tag Created!", "info");
 		return tag;
 }
 
