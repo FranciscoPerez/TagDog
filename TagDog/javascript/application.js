@@ -267,18 +267,6 @@ var keepPopover, delay = function() { keepPopover = setTimeout( function() { $('
 
 
 //create section functions
-function Tag(line1, line2, line3, line4)		//New class labeled Tag that contains each line and URL
-{
-	//<? php $email = $this->session->userdata('email');
-	this.email = "";
-	this.line = new Array();
-	this.line.push(line1);
-	this.line.push(line2);
-	this.line.push(line3);
-	this.line.push(line4);
-	this.URL = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + escape(line1+"\n"+line2+"\n"+line3+"\n"+line4);
-}
-
 function retrieveTagInfo(tag)
 {
 	var string = "";
@@ -289,17 +277,45 @@ function retrieveTagInfo(tag)
 	return string;
 }
 
+function Tag(line1, line2, line3, line4)		//New class labeled Tag that contains each line and URL
+{
+	//<? php $email = $this->session->userdata('email');
+	this.email = "";
+	this.line = new Array();
+	this.line.push(line1);
+	this.line.push(line2);
+	this.line.push(line3);
+	this.line.push(line4);
+	this.lines = line1+line2+line3+line4;
+	this.URL = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + escape(line1+"\n"+line2+"\n"+line3+"\n"+line4);//escape(line1+"\n"+line2+"\n"+line3+"\n"+line4);
+}
+
+
+
 function createTag(){
-		var URL="https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl="
+		var URL="https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=";
 		var line1=document.getElementById("c_line1").value;
 		var line2=document.getElementById("c_line2").value;
 		var line3=document.getElementById("c_line3").value;
 		var line4=document.getElementById("c_line4").value;
 		tag = new Tag(line1, line2, line3, line4);
-		var info = retrieveTagInfo(tag);
-		jQuery("button#Tag_Box").html("</br><a href='#share'><img id='QR_code' src='"+tag.URL+"'/></a>");
-		jQuery("button#share_button_preview").html("<img src='"+tag.URL+"' />");
-		postStatus("Tag_box", "Success! Tag Created!", "info");
+		//var info = retrieveTagInfo(tag);
+		if(tag.lines.length<=1024)
+		{
+			jQuery("button#Tag_Box").html("</br><a href='#share'><img id='QR_code' src='"+tag.URL+"'/></a>");
+			jQuery("button#share_button_preview").html("<img src='"+tag.URL+"' />");
+			var listsize = jQuery(".alert").length;
+			var itemname = "create_"+listsize;
+			postStatus(itemname, "Success! Tag Created!", "info");
+		}
+		else
+		{
+			jQuery("button#Tag_Box").html("<button class='btn' id='Tag_Box'/>Code Will Appear Here</button></a>");
+			jQuery("button#share_button_preview").html("<button class='btn' id='share_button_preview'>Create one first.</button>");
+			var listsize = jQuery(".alert").length;
+			var itemname = "create_"+listsize;
+			postStatus(itemname, "Error! Text Too Long", "danger");
+		}
 		return tag;
 }
 

@@ -83,8 +83,7 @@ class Home extends CI_Controller {
 	}
 	
 	function create(){
-		$d = 3;
-		return $d;
+		$this->load->model('StoreTag');
 	}
 
 
